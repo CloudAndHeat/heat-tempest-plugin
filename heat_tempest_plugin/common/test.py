@@ -172,6 +172,11 @@ class HeatIntegrationTest(testtools.testcase.WithAttributes,
 
         self.conf = config.CONF.heat_plugin
 
+        # Skipp Heat Tests if service is not available
+        # this is a workarround, no auth_url can be found if there is no service
+        if not self.conf.auth_url:
+          self.skipTest("test skipped or auth_url not found")
+
         self.assertIsNotNone(self.conf.auth_url,
                              'No auth_url configured')
         self.assertIsNotNone(self.conf.username,

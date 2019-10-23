@@ -95,5 +95,11 @@ def load_tests(loader, tests, pattern):
     api_tests = driver.build_tests(test_dir, loader, url=endpoint, host="",
                                    fixture_module=fixtures,
                                    test_loader_name=__name__)
+
+    # Skipp Heat Tests if Tests are disabled
+    if not config.CONF.service_available.heat_plugin:
+      LOG.info("Skip Heat Tests")
+      api_tests =  unittest.TestSuite()
+
     register_test_suite_ids(api_tests)
     return api_tests
